@@ -6,10 +6,27 @@ version := "0.1-SNAPSHOT"
 
 scalaVersion := "2.12.1"
 
+resolvers += "JBoss public" at "http://repository.jboss.org/nexus/content/groups/public/"
+
 libraryDependencies ++= Seq(
   "org.scalafx"   %% "scalafx"   % "8.0.102-R11",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test" //http://www.scalatest.org/download
 )
+
+libraryDependencies ++= Seq(
+    "drools-compiler",
+    "drools-core",
+    "drools-jsr94",
+    "drools-decisiontables",
+    "knowledge-api",
+    "drools-templates"
+).map("org.drools" % _ % "6.5.0.Final")
+
+libraryDependencies ++= Seq(
+    "kie-api",
+    "kie-internal"
+).map("org.kie" % _ % "6.5.0.Final")
+
 
 shellPrompt := { state => System.getProperty("user.name") + "> " }
 
