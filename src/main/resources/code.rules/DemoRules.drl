@@ -1,0 +1,27 @@
+package code.rules
+
+import code.model.Application;
+import code.model.Approval;
+
+
+
+rule "Applications with a credit score between 300 and 600 get the standard credit limit"
+    when
+        Application( creditScore >= 300, creditScore < 600 )
+    then
+        insert( new Approval( "You received the standard credit limit", true ) );
+end
+
+rule "Applications with a credit score above 500 get an extended credit limit"
+    when
+        Application( creditScore >= 600 )
+    then
+        insert( new Approval( "Congratulations!!! You received an extended line of credit", true ) );
+end
+
+rule "Applications with credit score less than 300 get rejected"
+    when
+        Application( creditScore < 300 )
+    then
+        insert( new Approval( "Sorry, you were not approved", false ) );
+end

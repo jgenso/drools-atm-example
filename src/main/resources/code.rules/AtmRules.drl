@@ -1,27 +1,201 @@
 package code.rules
 
-import code.model.Application;
-import code.model.Approval;
+import code.model.*;
 
-
-
-rule "Applications with a credit score between 300 and 600 get the standard credit limit"
+rule "Rule 1"
     when
-        Application( creditScore >= 300, creditScore < 600 )
+        Transaction(
+          valid_card == true,
+          expired == false,
+          pin_correct == true,
+          attempts < 3,
+          balance_after >= 0,
+          amount <= 500,
+          transaction_type == "withdraw"
+        )
     then
-        insert( new Approval( "You received the standard credit limit", true ) );
+        insert( new Approval( "Withdrawal approved", true ) );
 end
 
-rule "Applications with a credit score above 500 get an extended credit limit"
+rule "Rule 2"
     when
-        Application( creditScore >= 600 )
+        Transaction(
+          valid_card == false
+        )
     then
-        insert( new Approval( "Congratulations!!! You received an extended line of credit", true ) );
+        insert( new Approval( "Withdrawal approved", false ) );
 end
 
-rule "Applications with credit score less than 300 get rejected"
+rule "Rule 3"
     when
-        Application( creditScore < 300 )
+        Transaction(
+          expired == true
+        )
     then
-        insert( new Approval( "Sorry, you were not approved", false ) );
+        insert( new Approval( "Withdrawal approved", false) );
+end
+
+rule "Rule 4"
+    when
+        Transaction(
+          pin_correct == false
+        )
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+end
+
+rule "Rule 5"
+    when
+        Transaction(
+          attempts >= 3
+        )
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+end
+
+rule "Rule 6"
+    when
+        Transaction(
+          balance_after < 0
+        )
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+end
+
+rule "Rule 7"
+    when
+        Transaction(
+          amount > 500
+        )
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+end
+
+rule "Rule 8"
+    when
+        Transaction(
+          valid_card == true,
+          expired == false,
+          pin_correct == true,
+          attempts < 3,
+          balance_after >= 0,
+          amount <= 500,
+          transaction_type == "dui",
+          dui == true,
+          confirmed == true
+        )
+    then
+        insert( new Approval( "Withdrawal approved", true ) );
+end
+
+rule "Rule 9"
+    when
+        Transaction(
+          dui == false
+        )
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+end
+
+rule "Rule 10"
+    when
+        Transaction(
+          confirmed == false
+        )
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+end
+
+rule "Rule 11"
+    when
+        Transaction(
+          print == true
+        )
+    then
+        insert( new Print( true ) );
+end
+
+rule "Rule 12"
+    when
+        Transaction(
+          bank == "BNB"
+        )
+    then
+        insert( new Commission( 12 ) );
+end
+
+rule "Rule 13"
+    when
+        Transaction(
+          bank == "BancoSol"
+        )
+    then
+        insert( new Commission( 35 ) );
+end
+
+rule "Rule 14"
+    when
+        Transaction(
+          bank == "Mercantil"
+        )
+    then
+        insert( new Commission( 12 ) );
+end
+
+rule "Rule 15"
+    when
+        Transaction(
+          bank == "Ganadero"
+        )
+    then
+        insert( new Commission( 20 ) );
+end
+
+rule "Rule 16"
+    when
+        ATMBalance(balance < 0)
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+end
+
+rule "Rule 17"
+    when
+        InactivityTime(
+          time > 2
+        )
+    then
+        insert( new Approval( "Withdrawal approved", false ) );
+        insert( new RemoveCard( true ) );
+        insert( new Reset( true ) );
+        insert( new GoToStart( true ) );
+end
+
+rule "Rule 18"
+    when
+        Approval( approved == false ) && TryAnotherTransaction( yes == true )
+    then
+        insert( new RemoveCard( false ) );
+        insert( new Reset( false ) );
+        insert( new GoToStart( true ) );
+end
+
+rule "Rule 19"
+    when
+        Approval( approved == false ) && TryAnotherTransaction( yes == false )
+    then
+        insert( new RemoveCard( true ) );
+        insert( new Reset( true ) );
+        insert( new GoToStart( true ) );
+end
+
+rule "Rule 20"
+    when
+        Transaction(
+          valid_card == true,
+          expired == false,
+          pin_correct == false,
+          attempts >= 2
+        )
+    then
+        insert( new RunOutOfAttempts( true ) );
 end
