@@ -9,7 +9,7 @@ class CreditApplicationRulesTest {
 
   @Test
   def shouldApproveWithStandardCreditLimit( ) = {
-    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "credit-approval-ksession" )
+    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val application = Application( "michael", 500 )
 
     session.insert( application )
@@ -28,7 +28,7 @@ class CreditApplicationRulesTest {
 
   @Test
   def shouldApproveWithBetterCreditLimit( ) = {
-    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "credit-approval-ksession" )
+    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val application = Application( "michael", 600 )
 
     session.insert( application )
@@ -46,7 +46,7 @@ class CreditApplicationRulesTest {
 
   @Test
   def shouldRejectApplication = {
-    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "credit-approval-ksession" )
+    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val application = Application( "michael", 200 )
 
     session.insert( application )

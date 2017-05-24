@@ -2,8 +2,8 @@
 <kmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://www.drools.org/xsd/kmodule">
 
-    <kbase name="credit-approval" packages="code.rules">
-        <ksession name="credit-approval-ksession"/>
+    <kbase name="atm" packages="code.rules">
+        <ksession name="atm-ksession"/>
     </kbase>
 
 </kmodule>
