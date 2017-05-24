@@ -6,7 +6,11 @@ version := "0.1-SNAPSHOT"
 
 scalaVersion := "2.12.1"
 
-resolvers += "JBoss public" at "http://repository.jboss.org/nexus/content/groups/public/"
+resolvers ++= Seq(
+  "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases",
+  "Spray IO Repository" at "http://repo.spray.io/",
+  "JBoss Maven Repository" at "https://repository.jboss.org/"
+)
 
 libraryDependencies ++= Seq(
   "org.scalafx"   %% "scalafx"   % "8.0.102-R11",
@@ -26,6 +30,12 @@ libraryDependencies ++= Seq(
     "kie-api",
     "kie-internal"
 ).map("org.kie" % _ % "6.5.0.Final")
+
+libraryDependencies ++= Seq(
+  "junit" % "junit" % "4.12" % "test",
+  "com.novocode" % "junit-interface" % "0.8" % "test"
+)
+
 
 
 shellPrompt := { state => System.getProperty("user.name") + "> " }
