@@ -264,7 +264,53 @@ object Stages {
     printButton.onMouseClicked = {
       e: MouseEvent => {
         session.insert(TransactionType("print"))
-        stage = introStage
+        val cardNumber = session.getObjects(new ClassObjectFilter(classOf[CardNumber])).toArray.toList(0).asInstanceOf[CardNumber]
+        val card = BaseData.cards.find(_.number == cardNumber.number)
+        val pin = session.getObjects(new ClassObjectFilter(classOf[Pin])).toArray.toList(0).asInstanceOf[Pin]
+        val now = new java.util.Date
+        val transaction = card match {
+          case None => Transaction(
+            card = cardNumber.number,
+            valid_card = false,
+            transaction_type = "print"
+          )
+          case Some(c) => Transaction(
+            card = cardNumber.number,
+            valid_card = true,
+            expired = c.date.before(now),
+            pin_correct = c.pin == pin.pin,
+            attempts = if (c.pin == pin.pin) c.attempts else c.attempts + 1,
+            balance_after = c.balance ,
+            amount = 0.0,
+            fee = 0.0, //ToDo,
+            transaction_type = "print",
+            confirmed = true,
+            bank = c.bank
+          )
+        }
+        session.insert(transaction)
+        session.fireAllRules()
+        val result = session.getObjects(new ClassObjectFilter(classOf[Approval])).toArray.toList(0).asInstanceOf[Approval]
+        if (result.approved) {
+          stage = printStage(transaction.card, transaction.bank, transaction.balance_after)
+        } else {
+          BaseData.cards.find(_.number == transaction.card).foreach(c => {
+            if (transaction.attempts >= 3) {
+              c.attempts = transaction.attempts
+              c.valid = false
+            }
+          })
+          val reason: String = if (transaction.attempts >= 3) {
+            "Datos erroneos: Numero de intentos diarios excedidos, su tarjeta sera retenida"
+          } else if (transaction.expired) {
+            "Tarjeta expirada"
+          } else if (transaction.balance_after < 0) {
+            "Monto excede el saldo disponible"
+          } else {
+            "Datos erroneos"
+          }
+          stage = errorStage(reason)
+        }
       }
     }
 
@@ -514,6 +560,68 @@ object Stages {
           |
           |SI USTED HA LLEGADO HASTA ESTA PANTALLA
           |SU TRANSACCION  NO HA SIDO COMPLETADA.
+          |
+          |PRESIONE "SIGUIENTE" PARA CONTINUAR.
+        """.stripMargin), 0, 0)
+
+      add(new Text(logText + session.getObjects().toArray.mkString("\n")), 0, 1)
+      add(grid, 1, 0)
+    }
+
+    title = "ATM - Banco Union"
+    scene = new Scene {
+      fill = Color.White
+      content = baseGrid
+    }
+    minHeight = 800
+
+    minWidth = 600
+
+  }
+
+  def printStage(card: Int, bank: String, balance: Double): PrimaryStage = new PrimaryStage {
+    val nextButton = new Button("Siguiente")
+    nextButton.onMouseClicked = {
+      e: MouseEvent => {
+        stage = introStage
+      }
+    }
+
+    val url = this.getClass.getResource("/images/logobancounion.png").toExternalForm
+
+    val logo = new ImageView(
+      new Image(url, requestedWidth = 300, requestedHeight = 269, preserveRatio = true, smooth = true))
+
+    val grid = new GridPane() {
+      hgap = 10
+      vgap = 10
+      padding = Insets(20, 100, 10, 10)
+
+      add(logo, 0, 0)
+      add(new Text(
+        """
+          |SALDO
+          |------
+          |
+          | * TARJETA: %s
+          | * BANCO: %s
+          | * SALDO: %s
+        """.stripMargin.format(card, bank, balance)), 0, 1)
+      add(nextButton, 1, 2)
+    }
+
+    val baseGrid = new GridPane() {
+      hgap = 10
+      vgap = 10
+      padding = Insets(20, 100, 10, 10)
+
+      add(new Text(
+        """
+          |INFORMACION
+          |
+          |SI USTED HA LLEGADO HASTA ESTA PANTALLA
+          |SU TRANSACCION  NO HA SIDO COMPLETADA Y
+          |PUEDE VER LOS DATOS Y SALDO DE SU TARJETA.
           |
           |PRESIONE "SIGUIENTE" PARA CONTINUAR.
         """.stripMargin), 0, 0)
