@@ -24,6 +24,7 @@ import scalafx.scene.input.MouseEvent
 import scalafx.stage.Stage
 import scala.collection.JavaConverters._
 import scala.util.Try
+import scalafx.collections.ObservableBuffer
 
 
 object Stages {
@@ -256,7 +257,7 @@ object Stages {
     duiButton.onMouseClicked = {
       e: MouseEvent => {
         session.insert(TransactionType("dui"))
-        stage = introStage
+        stage = duiStage
       }
     }
 
@@ -456,6 +457,157 @@ object Stages {
           |
           |EL MONTO DEBE SER EN MULTIPLOS DE 10,
           |SIN DECIMALES.
+          |
+        """.stripMargin), 0, 0)
+      add(new Text(logText + session.getObjects().toArray.mkString("\n")), 0, 1)
+      add(grid, 1, 0)
+    }
+
+    title = "ATM - Banco Union"
+    scene = new Scene {
+      fill = Color.White
+      content = baseGrid
+    }
+    minHeight = 800
+
+    minWidth = 600
+
+  }
+
+  def duiStage: PrimaryStage = new PrimaryStage {
+    val nextButton = new Button("Siguiente")
+    nextButton.onMouseClicked = {
+      e: MouseEvent => {
+        val amount = amountField.getText.toDouble
+        val cardNumber = session.getObjects(new ClassObjectFilter(classOf[CardNumber])).toArray.toList(0).asInstanceOf[CardNumber]
+        val card = BaseData.cards.find(_.number == cardNumber.number)
+        val pin = session.getObjects(new ClassObjectFilter(classOf[Pin])).toArray.toList(0).asInstanceOf[Pin]
+        val now = new java.util.Date
+        val transaction = card match {
+          case None => Transaction(
+            card = cardNumber.number,
+            valid_card = false,
+            transaction_type = "dui",
+            gestion_dui = Some(gestionField.getText.toInt),
+            agencia = Some(agenciaField.getValue),
+            aduana = Some(aduanaField.getValue),
+            dui = Some(duiField.getText)
+          )
+          case Some(c) => Transaction(
+            card = cardNumber.number,
+            valid_card = true,
+            expired = c.date.before(now),
+            pin_correct = c.pin == pin.pin,
+            attempts = if (c.pin == pin.pin) c.attempts else c.attempts + 1,
+            balance_after = c.balance - amount,
+            amount = amount,
+            fee = 0.0, //ToDo,
+            transaction_type = "dui",
+            confirmed = true,
+            bank = c.bank,
+            gestion_dui = Some(gestionField.getText.toInt),
+            agencia = Some(agenciaField.getValue),
+            aduana = Some(aduanaField.getValue),
+            dui = Some(duiField.getText)
+          )
+        }
+        session.insert(transaction)
+        session.fireAllRules()
+        val result = session.getObjects(new ClassObjectFilter(classOf[Approval])).toArray.toList(0).asInstanceOf[Approval]
+        if (result.approved) {
+          BaseData.cards.find(_.number == transaction.card).foreach(c => {
+            c.balance = c.balance - amount
+          })
+          BaseData.aTMBalance.balance = BaseData.aTMBalance.balance - amount
+          stage = successStage
+        } else {
+          BaseData.cards.find(_.number == transaction.card).foreach(c => {
+            if (transaction.attempts >= 3) {
+              c.attempts = transaction.attempts
+              c.valid = false
+            }
+          })
+          val reason: String = if (transaction.attempts >=3) {
+            "Datos erroneos: Numero de intentos diarios excedidos, su tarjeta sera retenida"
+          } else if (transaction.expired) {
+            "Tarjeta expirada"
+          } else if (transaction.balance_after < 0) {
+            "Monto excede el saldo disponible"
+          } else {
+            "Datos erroneos"
+          }
+          stage = errorStage(reason)
+        }
+      }
+    }
+
+    val cancelButton = new Button("Cancelar")
+    cancelButton.onMouseClicked = {
+      e: MouseEvent => {
+        stage = introStage
+      }
+    }
+
+    val url = this.getClass.getResource("/images/logobancounion.png").toExternalForm
+
+    val logo = new ImageView(
+      new Image(url, requestedWidth = 300, requestedHeight = 269, preserveRatio = true, smooth = true))
+
+    val amountLabel = new Label("MONTO")
+
+    val amountField = new TextField()
+
+    val gestionLabel = new Label("GESTION")
+
+    val gestionField = new TextField()
+
+    val aduanaLabel = new Label("ADUANA")
+
+    val aduanaField = new ChoiceBox[String]{
+      items = ObservableBuffer("INTERIOR", "EXTERIOR")
+    }
+
+    val agenciaLabel = new Label("AGENCIA")
+
+    val agenciaField = new ChoiceBox[String]{
+      items = ObservableBuffer("AGENCIA 1", "AGENCIA 2")
+    }
+
+    val duiLabel = new Label("DUI")
+
+    val duiField = new TextField()
+
+    val grid = new GridPane() {
+      hgap = 10
+      vgap = 10
+      padding = Insets(20, 100, 10, 10)
+
+      add(logo, 0, 0)
+      add(amountLabel, 0, 1)
+      add(amountField, 1, 1)
+      add(gestionLabel, 0, 2)
+      add(gestionField, 1, 2)
+      add(aduanaLabel, 0, 3)
+      add(aduanaField, 1, 3)
+      add(agenciaLabel, 0, 4)
+      add(agenciaField, 1, 4)
+      add(duiLabel, 0, 5)
+      add(duiField, 1, 5)
+      add(cancelButton, 0, 6)
+      add(nextButton, 1, 6)
+    }
+
+    val baseGrid = new GridPane() {
+      hgap = 10
+      vgap = 10
+      padding = Insets(20, 100, 10, 10)
+
+      add(new Text(
+        """
+          |INFORMACION
+          |
+          |EL MONTO PUEDE CONTENER HASTA DOS DECIMALES,
+          |POR FAVOR INGRESE LOS DATOS PROPORCIONADOS POR ADUANAS.
           |
         """.stripMargin), 0, 0)
       add(new Text(logText + session.getObjects().toArray.mkString("\n")), 0, 1)

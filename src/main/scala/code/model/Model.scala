@@ -11,7 +11,11 @@ case class Transaction(
   fee: Double = 0,
   transaction_type: String,
   confirmed: Boolean = false,
-  bank: String = "Banco Union"
+  bank: String = "Banco Union",
+  gestion_dui: Option[Int] = None,
+  aduana: Option[String] = None,
+  agencia: Option[String] = None,
+  dui: Option[String] = None
 ) {
   override def toString: String =
     """
@@ -25,8 +29,27 @@ case class Transaction(
       |  * fee: %s
       |  * transaction_type: %s
       |  * confirmed: %s
-      |  * bank: %s
-    """.stripMargin.format(valid_card, expired, pin_correct, attempts, balance_after, amount, fee, transaction_type, confirmed, bank)
+      |  * bank: %s,
+      |  * gestion_dui: %s,
+      |  * aduana: %s,
+      |  * agencia: %s,
+      |  * dui: %s
+    """.stripMargin.format(
+      valid_card,
+      expired,
+      pin_correct,
+      attempts,
+      balance_after,
+      amount,
+      fee,
+      transaction_type,
+      confirmed,
+      bank,
+      gestion_dui getOrElse "",
+      aduana getOrElse "",
+      agencia getOrElse "",
+      dui getOrElse ""
+    )
 }
 
 case class ATMBalance(var balance: Double) {

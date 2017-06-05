@@ -14,6 +14,7 @@ class AtmRulesTest {
   def shouldApproveIfRule1IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -46,6 +47,7 @@ class AtmRulesTest {
   def shouldApproveIfRule2IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = false,
       expired = false,
       pin_correct = true,
@@ -78,6 +80,7 @@ class AtmRulesTest {
   def shouldApproveIfRule3IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = true,
       pin_correct = true,
@@ -110,6 +113,7 @@ class AtmRulesTest {
   def shouldApproveIfRule4IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = false,
@@ -142,6 +146,7 @@ class AtmRulesTest {
   def shouldApproveIfRule5IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -174,6 +179,7 @@ class AtmRulesTest {
   def shouldApproveIfRule6IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -206,6 +212,7 @@ class AtmRulesTest {
   def shouldApproveIfRule7IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -238,6 +245,7 @@ class AtmRulesTest {
   def shouldApproveIfRule8IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -270,6 +278,7 @@ class AtmRulesTest {
   def shouldApproveIfRule9IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -302,6 +311,7 @@ class AtmRulesTest {
   def shouldApproveIfRule10IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -334,6 +344,7 @@ class AtmRulesTest {
   def shouldApproveIfRule11IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -373,6 +384,7 @@ class AtmRulesTest {
   def shouldApproveIfRule12IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -412,6 +424,7 @@ class AtmRulesTest {
   def shouldApproveIfRule13IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -451,6 +464,7 @@ class AtmRulesTest {
   def shouldApproveIfRule14IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -490,6 +504,7 @@ class AtmRulesTest {
   def shouldApproveIfRule15IsApplied( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
@@ -532,6 +547,7 @@ class AtmRulesTest {
   def shouldUpdateTransaction( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
+      1,
       valid_card = true,
       expired = false,
       pin_correct = true,
