@@ -42,7 +42,33 @@ shellPrompt := { state => System.getProperty("user.name") + "> " }
 
 // set the main class for the main 'run' task
 // change Compile to Test to set it for 'test:run'
- mainClass in (Compile, run) := Some("code.run.AtmApp")
+mainClass in (Compile, run) := Some("code.run.AtmApp")
+mainClass in assembly := Some("code.run.AtmApp")
 
 // Fork a new JVM for 'run' and 'test:run' to avoid JavaFX double initialization problems
 fork := true
+
+//
+// Configuration for sbt-native-packager / JDKPackagerPlugin
+//
+
+enablePlugins(JDKPackagerPlugin)
+
+maintainer := "ScalaFX Organization (scalafx.org)"
+packageSummary := "Collection of live ScalaFX examples"
+packageDescription := "An application demonstrating ScalaFX code samples."
+
+lazy val iconGlob = sys.props("os.name").toLowerCase match {
+  case os if os.contains("mac") => "*.icns"
+  case os if os.contains("win") => "*.ico"
+  case _ => "*.png"
+}
+
+jdkAppIcon := (sourceDirectory.value ** iconGlob).getPaths.headOption.map(file)
+jdkPackagerType := "installer"
+
+antPackagerTasks in JDKPackager := (antPackagerTasks in JDKPackager).value orElse {
+  for {
+    f <- Some(file("/usr/lib/jvm/oracle-java8-jdk-amd64/lib/ant-javafx.jar")) if f.exists()
+  } yield f
+}
