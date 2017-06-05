@@ -5,29 +5,24 @@ case class Transaction(
   expired: Boolean,
   pin_correct: Boolean,
   attempts: Int,
-  balance_after: Int,
-  amount: Int,
+  balance_after: Double,
+  amount: Double,
+  fee: Double,
   transaction_type: String,
-  dui: Boolean,
   confirmed: Boolean,
-  print: Boolean,
   bank: String
 )
 
-case class ATMBalance(balance: Int)
+case class ATMBalance(var balance: Double)
 
-case class InactivityTime(time: Long)
+case class Commission(amount: Double)
 
-case class RemoveCard(yes: Boolean)
-
-case class Reset(yes: Boolean)
-
-case class GoToStart(yes: Boolean)
-
-case class TryAnotherTransaction(yes: Boolean)
-
-case class RunOutOfAttempts(yes: Boolean)
-
-case class Commission(amount: Int)
-
-case class Print(yes: Boolean)
+case class Card(
+  number: Int,
+  ping:Int,
+  bank: String,
+  var balance: Double,
+  var valid: Boolean,
+  var attempts: Int,
+  date: java.util.Date
+)

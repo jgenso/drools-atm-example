@@ -1,0 +1,226 @@
+<html>
+<head>
+<title>AtmRules.drl</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(106,135,89); }
+.s3 { color: rgb(171,81,186); }
+.s4 { color: rgb(15,151,149); }
+.s5 { color: rgb(201,59,72); }
+.s6 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+AtmRules.drl</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">code.rules 
+ 
+</span><span class="s0">import </span><span class="s1">code.model.*; 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 1&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          valid_card </span><span class="s4">== </span><span class="s5">true</span><span class="s1">, 
+          expired </span><span class="s4">== </span><span class="s5">false</span><span class="s1">, 
+          pin_correct </span><span class="s4">== </span><span class="s5">true</span><span class="s1">, 
+          attempts </span><span class="s4">&lt; </span><span class="s6">3</span><span class="s1">, 
+          balance_after </span><span class="s4">&gt;</span><span class="s1">= </span><span class="s6">0</span><span class="s1">, 
+          amount </span><span class="s4">&lt;</span><span class="s1">= </span><span class="s6">500</span><span class="s1">, 
+          transaction_type </span><span class="s4">== </span><span class="s2">&quot;withdraw&quot;</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">true </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 2&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          valid_card </span><span class="s4">== </span><span class="s5">false</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 3&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          expired </span><span class="s4">== </span><span class="s5">true</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false</span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 4&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          pin_correct </span><span class="s4">== </span><span class="s5">false</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 5&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          attempts </span><span class="s4">&gt;</span><span class="s1">= </span><span class="s6">3</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 6&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          balance_after </span><span class="s4">&lt; </span><span class="s6">0</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 7&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          amount </span><span class="s4">&gt; </span><span class="s6">500</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 8&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          valid_card </span><span class="s4">== </span><span class="s5">true</span><span class="s1">, 
+          expired </span><span class="s4">== </span><span class="s5">false</span><span class="s1">, 
+          pin_correct </span><span class="s4">== </span><span class="s5">true</span><span class="s1">, 
+          attempts </span><span class="s4">&lt; </span><span class="s6">3</span><span class="s1">, 
+          balance_after </span><span class="s4">&gt;</span><span class="s1">= </span><span class="s6">0</span><span class="s1">, 
+          amount </span><span class="s4">&lt;</span><span class="s1">= </span><span class="s6">500</span><span class="s1">, 
+          transaction_type </span><span class="s4">== </span><span class="s2">&quot;dui&quot;</span><span class="s1">, 
+          dui </span><span class="s4">== </span><span class="s5">true</span><span class="s1">, 
+          confirmed </span><span class="s4">== </span><span class="s5">true</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">true </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 9&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          dui </span><span class="s4">== </span><span class="s5">false</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 10&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          confirmed </span><span class="s4">== </span><span class="s5">false</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 11&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          print </span><span class="s4">== </span><span class="s5">true</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Print( </span><span class="s5">true </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 12&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          bank </span><span class="s4">== </span><span class="s2">&quot;BNB&quot;</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Commission( </span><span class="s6">12 </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 13&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          bank </span><span class="s4">== </span><span class="s2">&quot;BancoSol&quot;</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Commission( </span><span class="s6">35 </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 14&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          bank </span><span class="s4">== </span><span class="s2">&quot;Mercantil&quot;</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Commission( </span><span class="s6">12 </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 15&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          bank </span><span class="s4">== </span><span class="s2">&quot;Ganadero&quot;</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Commission( </span><span class="s6">20 </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 16&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        ATMBalance(balance </span><span class="s4">&lt; </span><span class="s6">0</span><span class="s1">) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 17&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        InactivityTime( 
+          time </span><span class="s4">&gt; </span><span class="s6">2</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Approval( </span><span class="s2">&quot;Withdrawal approved&quot;</span><span class="s1">, </span><span class="s5">false </span><span class="s1">) ); 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">RemoveCard( </span><span class="s5">true </span><span class="s1">) ); 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Reset( </span><span class="s5">true </span><span class="s1">) ); 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">GoToStart( </span><span class="s5">true </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 18&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Approval( approved </span><span class="s4">== </span><span class="s5">false </span><span class="s1">) </span><span class="s4">&amp;&amp; </span><span class="s1">TryAnotherTransaction( yes </span><span class="s4">== </span><span class="s5">true </span><span class="s1">) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">RemoveCard( </span><span class="s5">false </span><span class="s1">) ); 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Reset( </span><span class="s5">false </span><span class="s1">) ); 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">GoToStart( </span><span class="s5">true </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 19&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Approval( approved </span><span class="s4">== </span><span class="s5">false </span><span class="s1">) </span><span class="s4">&amp;&amp; </span><span class="s1">TryAnotherTransaction( yes </span><span class="s4">== </span><span class="s5">false </span><span class="s1">) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">RemoveCard( </span><span class="s5">true </span><span class="s1">) ); 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">Reset( </span><span class="s5">true </span><span class="s1">) ); 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">GoToStart( </span><span class="s5">true </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+ 
+</span><span class="s0">rule </span><span class="s2">&quot;Rule 20&quot;</span><span class="s1"> 
+    </span><span class="s3">when</span><span class="s1"> 
+        Transaction( 
+          valid_card </span><span class="s4">== </span><span class="s5">true</span><span class="s1">, 
+          expired </span><span class="s4">== </span><span class="s5">false</span><span class="s1">, 
+          pin_correct </span><span class="s4">== </span><span class="s5">false</span><span class="s1">, 
+          attempts </span><span class="s4">&gt;</span><span class="s1">= </span><span class="s6">2</span><span class="s1"> 
+        ) 
+    </span><span class="s3">then</span><span class="s1"> 
+        </span><span class="s5">insert</span><span class="s1">( </span><span class="s5">new </span><span class="s1">RunOutOfAttempts( </span><span class="s5">true </span><span class="s1">) ); 
+</span><span class="s0">end</span><span class="s1"> 
+</span></pre>
+</body>
+</html>

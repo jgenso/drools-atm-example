@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>build.sbt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(169,183,198); }
+.s1 { color: rgb(106,135,89); }
+.s2 { color: rgb(204,120,50); }
+.s3 { color: rgb(128,128,128); }
+.s4 { color: rgb(204,120,50); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+build.sbt</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">name := </span><span class="s1">&quot;drools-atm-example&quot;</span><span class="s0"> 
+ 
+organization := </span><span class="s1">&quot;jgenso&quot;</span><span class="s0"> 
+ 
+version := </span><span class="s1">&quot;0.1-SNAPSHOT&quot;</span><span class="s0"> 
+ 
+scalaVersion := </span><span class="s1">&quot;2.12.1&quot;</span><span class="s0"> 
+ 
+resolvers ++= Seq( 
+  </span><span class="s1">&quot;Sonatype releases&quot; </span><span class="s0">at </span><span class="s1">&quot;https://oss.sonatype.org/content/repositories/releases&quot;</span><span class="s2">,</span><span class="s0"> 
+  </span><span class="s1">&quot;Spray IO Repository&quot; </span><span class="s0">at </span><span class="s1">&quot;http://repo.spray.io/&quot;</span><span class="s2">,</span><span class="s0"> 
+  </span><span class="s1">&quot;JBoss Maven Repository&quot; </span><span class="s0">at </span><span class="s1">&quot;https://repository.jboss.org/&quot;</span><span class="s0"> 
+) 
+ 
+libraryDependencies ++= Seq( 
+  </span><span class="s1">&quot;org.scalafx&quot;   </span><span class="s0">%% </span><span class="s1">&quot;scalafx&quot;   </span><span class="s0">% </span><span class="s1">&quot;8.0.102-R11&quot;</span><span class="s2">,</span><span class="s0"> 
+  </span><span class="s1">&quot;org.scalatest&quot; </span><span class="s0">%% </span><span class="s1">&quot;scalatest&quot; </span><span class="s0">% </span><span class="s1">&quot;3.0.1&quot; </span><span class="s0">% </span><span class="s1">&quot;test&quot; </span><span class="s3">//http://www.scalatest.org/download</span><span class="s0"> 
+) 
+ 
+libraryDependencies ++= Seq( 
+    </span><span class="s1">&quot;drools-compiler&quot;</span><span class="s2">,</span><span class="s0"> 
+    </span><span class="s1">&quot;drools-core&quot;</span><span class="s2">,</span><span class="s0"> 
+    </span><span class="s1">&quot;drools-jsr94&quot;</span><span class="s2">,</span><span class="s0"> 
+    </span><span class="s1">&quot;drools-decisiontables&quot;</span><span class="s2">,</span><span class="s0"> 
+    </span><span class="s1">&quot;knowledge-api&quot;</span><span class="s2">,</span><span class="s0"> 
+    </span><span class="s1">&quot;drools-templates&quot;</span><span class="s0"> 
+).map(</span><span class="s1">&quot;org.drools&quot; </span><span class="s0">% _ % </span><span class="s1">&quot;6.5.0.Final&quot;</span><span class="s0">) 
+ 
+libraryDependencies ++= Seq( 
+    </span><span class="s1">&quot;kie-api&quot;</span><span class="s2">,</span><span class="s0"> 
+    </span><span class="s1">&quot;kie-internal&quot;</span><span class="s0"> 
+).map(</span><span class="s1">&quot;org.kie&quot; </span><span class="s0">% _ % </span><span class="s1">&quot;6.5.0.Final&quot;</span><span class="s0">) 
+ 
+libraryDependencies ++= Seq( 
+  </span><span class="s1">&quot;junit&quot; </span><span class="s0">% </span><span class="s1">&quot;junit&quot; </span><span class="s0">% </span><span class="s1">&quot;4.12&quot; </span><span class="s0">% </span><span class="s1">&quot;test&quot;</span><span class="s2">,</span><span class="s0"> 
+  </span><span class="s1">&quot;com.novocode&quot; </span><span class="s0">% </span><span class="s1">&quot;junit-interface&quot; </span><span class="s0">% </span><span class="s1">&quot;0.8&quot; </span><span class="s0">% </span><span class="s1">&quot;test&quot;</span><span class="s0"> 
+) 
+ 
+ 
+ 
+shellPrompt := { state =&gt; System.getProperty(</span><span class="s1">&quot;user.name&quot;</span><span class="s0">) + </span><span class="s1">&quot;&gt; &quot; </span><span class="s0">} 
+ 
+</span><span class="s3">// set the main class for the main 'run' task</span><span class="s0"> 
+</span><span class="s3">// change Compile to Test to set it for 'test:run'</span><span class="s0"> 
+mainClass in (Compile</span><span class="s2">, </span><span class="s0">run) := Some(</span><span class="s1">&quot;my.scalafx.ScalaFXHelloWorld&quot;</span><span class="s0">) 
+ 
+</span><span class="s3">// Fork a new JVM for 'run' and 'test:run' to avoid JavaFX double initialization problems</span><span class="s0"> 
+fork := </span><span class="s4">true</span><span class="s0"> 
+</span></pre>
+</body>
+</html>

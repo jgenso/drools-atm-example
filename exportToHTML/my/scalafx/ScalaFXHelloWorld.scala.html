@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>ScalaFXHelloWorld.scala</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); font-weight: bold; }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(128,128,128); }
+.s3 { color: rgb(106,135,89); }
+.s4 { color: rgb(104,151,187); }
+.s5 { color: rgb(204,120,50); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+ScalaFXHelloWorld.scala</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">my.scalafx 
+ 
+</span><span class="s0">import </span><span class="s1">scalafx.application.JFXApp 
+</span><span class="s0">import </span><span class="s1">scalafx.application.JFXApp.PrimaryStage 
+</span><span class="s0">import </span><span class="s1">scalafx.geometry.Insets 
+</span><span class="s0">import </span><span class="s1">scalafx.scene.Scene 
+</span><span class="s0">import </span><span class="s1">scalafx.scene.effect.DropShadow 
+</span><span class="s0">import </span><span class="s1">scalafx.scene.layout.HBox 
+</span><span class="s0">import </span><span class="s1">scalafx.scene.paint.Color._ 
+</span><span class="s0">import </span><span class="s1">scalafx.scene.paint._ 
+</span><span class="s0">import </span><span class="s1">scalafx.scene.text.Text 
+ 
+</span><span class="s0">object </span><span class="s1">ScalaFXHelloWorld </span><span class="s0">extends </span><span class="s1">JFXApp { 
+ 
+  stage = </span><span class="s0">new </span><span class="s1">PrimaryStage { 
+    </span><span class="s2">//    initStyle(StageStyle.UNIFIED)</span><span class="s1"> 
+    title = </span><span class="s3">&quot;ScalaFX Hello World&quot;</span><span class="s1"> 
+    scene = </span><span class="s0">new </span><span class="s1">Scene { 
+      fill = Color.rgb(</span><span class="s4">38</span><span class="s5">, </span><span class="s4">38</span><span class="s5">, </span><span class="s4">38</span><span class="s1">) 
+      content = </span><span class="s0">new </span><span class="s1">HBox { 
+        padding = Insets(</span><span class="s4">50</span><span class="s5">, </span><span class="s4">80</span><span class="s5">, </span><span class="s4">50</span><span class="s5">, </span><span class="s4">80</span><span class="s1">) 
+        children = Seq( 
+          </span><span class="s0">new </span><span class="s1">Text { 
+            text = </span><span class="s3">&quot;Scala&quot;</span><span class="s1"> 
+            style = </span><span class="s3">&quot;-fx-font: normal bold 100pt sans-serif&quot;</span><span class="s1"> 
+            fill = </span><span class="s0">new </span><span class="s1">LinearGradient( 
+              endX = </span><span class="s4">0</span><span class="s5">,</span><span class="s1"> 
+              stops = Stops(Color.Red</span><span class="s5">, </span><span class="s1">Color.DarkRed)) 
+          }</span><span class="s5">,</span><span class="s1"> 
+          </span><span class="s0">new </span><span class="s1">Text { 
+            text = </span><span class="s3">&quot;FX&quot;</span><span class="s1"> 
+            style = </span><span class="s3">&quot;-fx-font: italic bold 100pt sans-serif&quot;</span><span class="s1"> 
+            fill = </span><span class="s0">new </span><span class="s1">LinearGradient( 
+              endX = </span><span class="s4">0</span><span class="s5">,</span><span class="s1"> 
+              stops = Stops(White</span><span class="s5">, </span><span class="s1">DarkGray) 
+            ) 
+            effect = </span><span class="s0">new </span><span class="s1">DropShadow { 
+              color = DarkGray 
+              radius = </span><span class="s4">15</span><span class="s1"> 
+              spread = </span><span class="s4">0.25</span><span class="s1"> 
+            } 
+          } 
+        ) 
+      } 
+    } 
+ 
+  } 
+} 
+</span></pre>
+</body>
+</html>

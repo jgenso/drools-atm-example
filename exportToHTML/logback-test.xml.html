@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>logback-test.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(232,191,106); }
+.s1 { color: rgb(186,186,186); }
+.s2 { color: rgb(106,135,89); }
+.s3 { color: rgb(169,183,198); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+logback-test.xml</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">&lt;?</span><span class="s1">xml version=</span><span class="s2">&quot;1.0&quot; </span><span class="s1">encoding=</span><span class="s2">&quot;UTF-8&quot;</span><span class="s0">?&gt;</span><span class="s3"> 
+</span><span class="s0">&lt;configuration&gt;</span><span class="s3"> 
+ 
+    </span><span class="s0">&lt;appender </span><span class="s1">name=</span><span class="s2">&quot;STDOUT&quot; </span><span class="s1">class=</span><span class="s2">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span><span class="s0">&gt;</span><span class="s3"> 
+        </span><span class="s0">&lt;layout </span><span class="s1">class=</span><span class="s2">&quot;ch.qos.logback.classic.PatternLayout&quot;</span><span class="s0">&gt;</span><span class="s3"> 
+            </span><span class="s0">&lt;Pattern&gt;</span><span class="s3"> 
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n 
+            </span><span class="s0">&lt;/Pattern&gt;</span><span class="s3"> 
+        </span><span class="s0">&lt;/layout&gt;</span><span class="s3"> 
+    </span><span class="s0">&lt;/appender&gt;</span><span class="s3"> 
+ 
+    </span><span class="s0">&lt;root </span><span class="s1">level=</span><span class="s2">&quot;INFO&quot;</span><span class="s0">&gt;</span><span class="s3"> 
+        </span><span class="s0">&lt;appender-ref </span><span class="s1">ref=</span><span class="s2">&quot;STDOUT&quot; </span><span class="s0">/&gt;</span><span class="s3"> 
+    </span><span class="s0">&lt;/root&gt;</span><span class="s3"> 
+ 
+</span><span class="s0">&lt;/configuration&gt;</span></pre>
+</body>
+</html>

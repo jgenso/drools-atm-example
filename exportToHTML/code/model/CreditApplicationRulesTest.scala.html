@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>CreditApplicationRulesTest.scala</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); font-weight: bold; }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(106,135,89); }
+.s3 { color: rgb(204,120,50); }
+.s4 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+CreditApplicationRulesTest.scala</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">code.model 
+ 
+</span><span class="s0">import </span><span class="s1">org.junit.Assert._ 
+</span><span class="s0">import </span><span class="s1">org.junit.Test 
+</span><span class="s0">import </span><span class="s1">org.kie.api.KieServices 
+</span><span class="s0">import </span><span class="s1">org.kie.api.runtime.ClassObjectFilter 
+ 
+</span><span class="s0">class </span><span class="s1">CreditApplicationRulesTest { 
+ 
+  @Test 
+  </span><span class="s0">def </span><span class="s1">shouldApproveWithStandardCreditLimit( ) = { 
+    </span><span class="s0">val </span><span class="s1">session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( </span><span class="s2">&quot;atm-ksession&quot; </span><span class="s1">) 
+    </span><span class="s0">val </span><span class="s1">application = Application( </span><span class="s2">&quot;michael&quot;</span><span class="s3">, </span><span class="s4">500 </span><span class="s1">) 
+ 
+    session.insert( application ) 
+    session.fireAllRules( ) 
+    session.dispose( ) 
+ 
+    </span><span class="s0">val </span><span class="s1">i = session.getObjects( </span><span class="s0">new </span><span class="s1">ClassObjectFilter( classOf[ Approval ] ) ).iterator( ) 
+ 
+    </span><span class="s0">while </span><span class="s1">( i.hasNext ) { 
+      </span><span class="s0">val </span><span class="s1">approval = i.next.asInstanceOf[ Approval ] 
+      assertTrue( approval.approved ) 
+      assertEquals( </span><span class="s2">&quot;You received the standard credit limit&quot;</span><span class="s3">, </span><span class="s1">approval.message ) 
+    } 
+ 
+  } 
+ 
+  @Test 
+  </span><span class="s0">def </span><span class="s1">shouldApproveWithBetterCreditLimit( ) = { 
+    </span><span class="s0">val </span><span class="s1">session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( </span><span class="s2">&quot;atm-ksession&quot; </span><span class="s1">) 
+    </span><span class="s0">val </span><span class="s1">application = Application( </span><span class="s2">&quot;michael&quot;</span><span class="s3">, </span><span class="s4">600 </span><span class="s1">) 
+ 
+    session.insert( application ) 
+    session.fireAllRules( ) 
+    session.dispose( ) 
+ 
+    </span><span class="s0">val </span><span class="s1">i = session.getObjects( </span><span class="s0">new </span><span class="s1">ClassObjectFilter( classOf[ Approval ] ) ).iterator( ) 
+ 
+    </span><span class="s0">while </span><span class="s1">( i.hasNext ) { 
+      </span><span class="s0">val </span><span class="s1">approval = i.next.asInstanceOf[ Approval ] 
+      assertTrue( approval.approved ) 
+      assertEquals( </span><span class="s2">&quot;Congratulations!!! You received an extended line of credit&quot;</span><span class="s3">, </span><span class="s1">approval.message ) 
+    } 
+  } 
+ 
+  @Test 
+  </span><span class="s0">def </span><span class="s1">shouldRejectApplication = { 
+    </span><span class="s0">val </span><span class="s1">session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( </span><span class="s2">&quot;atm-ksession&quot; </span><span class="s1">) 
+    </span><span class="s0">val </span><span class="s1">application = Application( </span><span class="s2">&quot;michael&quot;</span><span class="s3">, </span><span class="s4">200 </span><span class="s1">) 
+ 
+    session.insert( application ) 
+    session.fireAllRules( ) 
+    session.dispose( ) 
+ 
+    </span><span class="s0">val </span><span class="s1">i = session.getObjects( </span><span class="s0">new </span><span class="s1">ClassObjectFilter( classOf[ Approval ] ) ).iterator( ) 
+ 
+    </span><span class="s0">while </span><span class="s1">( i.hasNext ) { 
+      </span><span class="s0">val </span><span class="s1">approval = i.next.asInstanceOf[ Approval ] 
+      assertFalse( approval.approved ) 
+      assertEquals( </span><span class="s2">&quot;Sorry, you were not approved&quot;</span><span class="s3">, </span><span class="s1">approval.message ) 
+    } 
+  } 
+ 
+} 
+</span></pre>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Model.scala</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); font-weight: bold; }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(204,120,50); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+Model.scala</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">code.model 
+ 
+</span><span class="s0">case class </span><span class="s1">Transaction( 
+  valid_card: Boolean</span><span class="s2">,</span><span class="s1"> 
+  expired: Boolean</span><span class="s2">,</span><span class="s1"> 
+  pin_correct: Boolean</span><span class="s2">,</span><span class="s1"> 
+  attempts: Int</span><span class="s2">,</span><span class="s1"> 
+  balance_after: Int</span><span class="s2">,</span><span class="s1"> 
+  amount: Int</span><span class="s2">,</span><span class="s1"> 
+  transaction_type: String</span><span class="s2">,</span><span class="s1"> 
+  dui: Boolean</span><span class="s2">,</span><span class="s1"> 
+  confirmed: Boolean</span><span class="s2">,</span><span class="s1"> 
+  print: Boolean</span><span class="s2">,</span><span class="s1"> 
+  bank: String 
+) 
+ 
+</span><span class="s0">case class </span><span class="s1">ATMBalance(balance: Int) 
+ 
+</span><span class="s0">case class </span><span class="s1">InactivityTime(time: Long) 
+ 
+</span><span class="s0">case class </span><span class="s1">RemoveCard(yes: Boolean) 
+ 
+</span><span class="s0">case class </span><span class="s1">Reset(yes: Boolean) 
+ 
+</span><span class="s0">case class </span><span class="s1">GoToStart(yes: Boolean) 
+ 
+</span><span class="s0">case class </span><span class="s1">TryAnotherTransaction(yes: Boolean) 
+ 
+</span><span class="s0">case class </span><span class="s1">RunOutOfAttempts(yes: Boolean) 
+ 
+</span><span class="s0">case class </span><span class="s1">Commission(amount: Int) 
+ 
+</span><span class="s0">case class </span><span class="s1">Print(yes: Boolean)</span></pre>
+</body>
+</html>
