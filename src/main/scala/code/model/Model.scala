@@ -26,3 +26,5 @@ case class Card(
   var attempts: Int,
   date: java.util.Date
 )
+
+case class Approval( message : String, approved : Boolean )

@@ -1,4 +1,4 @@
-package data
+package code.data
 
 import code.model.{ATMBalance, Card}
 

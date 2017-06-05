@@ -1,4 +1,4 @@
-package my.scalafx
+package code.run
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -10,7 +10,7 @@ import scalafx.scene.paint.Color._
 import scalafx.scene.paint._
 import scalafx.scene.text.Text
 
-object ScalaFXHelloWorld extends JFXApp {
+object AtmApp extends JFXApp {
 
   stage = new PrimaryStage {
     //    initStyle(StageStyle.UNIFIED)

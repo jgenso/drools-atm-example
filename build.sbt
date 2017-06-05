@@ -42,7 +42,7 @@ shellPrompt := { state => System.getProperty("user.name") + "> " }
 
 // set the main class for the main 'run' task
 // change Compile to Test to set it for 'test:run'
-mainClass in (Compile, run) := Some("my.scalafx.ScalaFXHelloWorld")
+ mainClass in (Compile, run) := Some("code.run.AtmApp")
 
 // Fork a new JVM for 'run' and 'test:run' to avoid JavaFX double initialization problems
 fork := true
