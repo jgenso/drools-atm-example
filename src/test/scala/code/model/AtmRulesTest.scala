@@ -6,6 +6,7 @@ import org.junit.Test
 import org.kie.api.KieServices
 import org.kie.api.runtime.ClassObjectFilter
 import org.kie.api.runtime.rule.{AgendaFilter, Match}
+import scala.collection.JavaConverters._
 
 class AtmRulesTest {
 
@@ -528,7 +529,7 @@ class AtmRulesTest {
   }
 
   @Test
-  def shouldApproveIfRule16IsApplied( ) = {
+  def shouldUpdateTransaction( ) = {
     val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
     val transaction = Transaction(
       valid_card = true,
@@ -543,115 +544,27 @@ class AtmRulesTest {
       bank = "Banco Union"
     )
 
-    session.addEventListener(new DebugAgendaEventListener)
-
-    session.insert(transaction)
-    session.fireAllRules( )
-    session.dispose( )
-
-    val i = session.getObjects( new ClassObjectFilter( classOf[ Approval ] ) ).iterator( )
-
-    while ( i.hasNext ) {
-      val approval = i.next.asInstanceOf[ Approval ]
-      assertTrue( approval.approved )
-      assertEquals( "Withdrawal approved", approval.message )
-    }
-
-  }
-
-  @Test
-  def shouldApproveIfRule17IsApplied( ) = {
-    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
-    val transaction = Transaction(
-      valid_card = true,
-      expired = false,
-      pin_correct = true,
-      attempts = 1,
-      balance_after = 200,
-      amount = 400,
-      fee = 0,
-      transaction_type = "withdraw",
-      confirmed = true,
-      bank = "Banco Union"
-    )
+    val transaction2 = transaction.copy(attempts = 3)
 
     session.addEventListener(new DebugAgendaEventListener)
 
     session.insert(transaction)
-    session.fireAllRules( )
-    session.dispose( )
 
-    val i = session.getObjects( new ClassObjectFilter( classOf[ Approval ] ) ).iterator( )
+    assertTrue( 1 == session.getFactCount)
 
-    while ( i.hasNext ) {
-      val approval = i.next.asInstanceOf[ Approval ]
-      assertTrue( approval.approved )
-      assertEquals( "Withdrawal approved", approval.message )
-    }
+    val fhT1 = session.getFactHandle(transaction)
 
-  }
+    session.delete(fhT1)
 
-  @Test
-  def shouldApproveIfRule18IsApplied( ) = {
-    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
-    val transaction = Transaction(
-      valid_card = true,
-      expired = false,
-      pin_correct = true,
-      attempts = 1,
-      balance_after = 200,
-      amount = 400,
-      fee = 0,
-      transaction_type = "withdraw",
-      confirmed = true,
-      bank = "Banco Union"
-    )
+    assertTrue( 0 == session.getFactCount)
 
-    session.addEventListener(new DebugAgendaEventListener)
+    session.insert(transaction2)
 
-    session.insert(transaction)
-    session.fireAllRules( )
-    session.dispose( )
+    assertTrue( 1 == session.getFactCount)
 
-    val i = session.getObjects( new ClassObjectFilter( classOf[ Approval ] ) ).iterator( )
+    val i = session.getObjects( new ClassObjectFilter( classOf[ Transaction] ) ).toArray.toList(0).asInstanceOf[Transaction]
 
-    while ( i.hasNext ) {
-      val approval = i.next.asInstanceOf[ Approval ]
-      assertTrue( approval.approved )
-      assertEquals( "Withdrawal approved", approval.message )
-    }
-
-  }
-
-  @Test
-  def shouldApproveIfRule19IsApplied( ) = {
-    val session = KieServices.Factory.get( ).newKieClasspathContainer( ).newKieSession( "atm-ksession" )
-    val transaction = Transaction(
-      valid_card = true,
-      expired = false,
-      pin_correct = true,
-      attempts = 1,
-      balance_after = 200,
-      amount = 400,
-      fee = 0,
-      transaction_type = "withdraw",
-      confirmed = true,
-      bank = "Banco Union"
-    )
-
-    session.addEventListener(new DebugAgendaEventListener)
-
-    session.insert(transaction)
-    session.fireAllRules( )
-    session.dispose( )
-
-    val i = session.getObjects( new ClassObjectFilter( classOf[ Approval ] ) ).iterator( )
-
-    while ( i.hasNext ) {
-      val approval = i.next.asInstanceOf[ Approval ]
-      assertTrue( approval.approved )
-      assertEquals( "Withdrawal approved", approval.message )
-    }
+    assertTrue( i.attempts == 3)
 
   }
 }
