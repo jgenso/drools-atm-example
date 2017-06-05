@@ -18,6 +18,6 @@ import scalafx.scene.image.{Image, ImageView}
 
 object AtmApp extends JFXApp {
 
-  stage = Stages.intro
+  stage = Stages.introStage
 
 }
