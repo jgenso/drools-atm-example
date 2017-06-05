@@ -52,6 +52,14 @@ fork := true
 // Configuration for sbt-native-packager / JDKPackagerPlugin
 //
 
+mergeStrategy in assembly := {
+  case x if x.contains("XmlPullParserException") => MergeStrategy.first
+  case x if x.contains("XmlPullParser") => MergeStrategy.first
+  case x =>
+    val oldStrategy = (mergeStrategy in assembly).value
+    oldStrategy(x)
+}
+
 enablePlugins(JDKPackagerPlugin)
 
 maintainer := "ScalaFX Organization (scalafx.org)"
